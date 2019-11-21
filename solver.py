@@ -105,7 +105,7 @@ class Solver(object):
                 logit = self.net(x)
                 prediction = logit.max(1)[1]
 
-                correct = torch.eq(prediction, y).float().mean().data[0]
+                correct = torch.eq(prediction, y).float().mean().data
                 cost = F.cross_entropy(logit, y)
 
                 self.optim.zero_grad()
@@ -117,7 +117,7 @@ class Solver(object):
                         print()
                         print(self.env_name)
                         print('[{:03d}:{:03d}]'.format(self.global_epoch, batch_idx))
-                        print('acc:{:.3f} loss:{:.3f}'.format(correct, cost.data[0]))
+                        print('acc:{:.3f} loss:{:.3f}'.format(correct, cost.data))
 
 
                     if self.tensorboard:
@@ -128,7 +128,7 @@ class Solver(object):
                                             tag_scalar_dict={'train':1-correct},
                                             global_step=self.global_iter)
                         self.tf.add_scalars(main_tag='performance/cost',
-                                            tag_scalar_dict={'train':cost.data[0]},
+                                            tag_scalar_dict={'train':cost.data},
                                             global_step=self.global_iter)
 
 
@@ -156,8 +156,8 @@ class Solver(object):
             logit = self.net(x)
             prediction = logit.max(1)[1]
 
-            correct += torch.eq(prediction, y).float().sum().data[0]
-            cost += F.cross_entropy(logit, y, size_average=False).data[0]
+            correct += torch.eq(prediction, y).float().sum().data
+            cost += F.cross_entropy(logit, y, size_average=False).data
             total += x.size(0)
 
         accuracy = correct / total
@@ -297,7 +297,7 @@ class Solver(object):
         self.set_mode('train')
 
         return x_adv.data, changed.data,\
-                (accuracy.data[0], cost.data[0], accuracy_adv.data[0], cost_adv.data[0])
+                (accuracy.data, cost.data, accuracy_adv.data, cost_adv.data)
 
     def save_checkpoint(self, filename='ckpt.tar'):
         model_states = {

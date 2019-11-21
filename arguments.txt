@@ -1,0 +1,8 @@
+#Train the MNIST classifier
+--mode train
+
+#Generate Non-Targeted Adversarial examples for the trained classifier
+--mode generate --iteration 1 --epsilon 0.03 --load_ckpt best_acc.tar
+
+#Generate Targeted Adversarial examples for the trained classifier
+--mode generate --iteration 1 --epsilon 0.03 --target 3 --load_ckpt best_acc.tar
